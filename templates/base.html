@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html>
     <head>
+        {% if success %}
+        <title>Welcome to Zoey's Page!</title>
+        {% else %}
         <title>User Signup</title>
+        {% endif %}
         <link rel="shortcut icon" type="image/ico" href="/static/favicon.ico">
         <style>
-/*body {
-    background-color: lightblue;
-}*/
 
+{% if success %}
+body {
+    background-color: rgb(237, 248, 255);
+    /*background-color: lightblue;*/
+}
+{% endif %}
 a {
     font-weight: bold;
 }
 
 #forge {
-    height: 3%;
-    width: 3%;
-    float: right;
+    height: 25px;
+    width: 25px;
+    float: left;
+
     padding-top: 10px;
-    padding-right: 10px;
+    padding-right: 100px;
     padding-bottom: 10px;
     padding-left: 10px;
 }
@@ -43,6 +51,6 @@ a {
 
         {% block content %}
         {% endblock %}
-
+        <img src="static/forge.png" id="forge"/><!--If you give Forge enough time he can build anything.-->
     </body>
 </html>

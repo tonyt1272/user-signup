@@ -26,6 +26,10 @@ def index():
     e_mail_error=e_mail_error1 and cgi.escape(e_mail_error1, quote=True))
     ##----------
 
+# @app.route("/welcome", methods=['POST'])
+# def welcome_page():
+#     render_template('welcome.html', success='Welcome')
+
 @app.route("/submit", methods=['POST'])
 def form_submission():
     # look inside the request to figure out what the user typed
@@ -99,9 +103,8 @@ def form_submission():
 
     #form render or redirect
     if form_error ==True:	
-    	#return redirect("/?user_name_error={r0}&pass_word_error={r1}&vpass_word_error={r2}".format(r0=user_name_error,r1=pass_word_error,r2=vpass_word_error))
     	return redirect("/?user_name_error={}&pass_word_error={}&vpass_word_error={}&e_mail_error={}&form_name={}".format(*error_list))
     else:
-    	return render_template('signup.html')
-
+    	#return render_template('signup.html', success='Welcome')
+        return render_template('welcome.html', success='Welcome')
 app.run()
