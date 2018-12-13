@@ -5,106 +5,103 @@ app = Flask(__name__)
 
 app.config['DEBUG'] = True      # displays runtime errors in the browser, too
 
-# a list of movies that nobody should have to watch
-terrible_movies = [
-    "Gigli",
-    "Star Wars Episode 1: Attack of the Clones",
-    "Paul Blart: Mall Cop 2",
-    "Nine Lives",
-    "Starship Troopers"
-]
-
-def get_current_watchlist():
-    # returns user's current watchlist--hard coded for now
-    return [ "Star Wars", "Minions", "Freaky Friday", "My Favorite Martian" ]
-
-def get_watched_movies():
-    # returns user's current watchlist--hard coded for now
-    return [ "Star Wars", "Minions", "Freaky Friday", "My Favorite Martian" ]
-
-# TODO: DONE
-# Modify "My Watchlist" so that you eliminate the need for the "crossoff" form in edit.html. 
-# Now, next to every list item/movie listed in "My Watchlist" you should display a button that says "I Watched it!". 
-# Clicking the button will result in a confirmation message that the movie has been watched. 
-# So you'll need to add a form within the <li> tags of "My Watchlist"
-# Once this is done, delete the "crossoff" form in edit.html
-
-# TODO: DONE
-# Make a ratings.html template which lists all movies that have been crossed off.
-# It should have a header of <h2>Movies I Have Watched</h2>
-# Add a form for rating EACH list item/movie using a <select> dropdown with the options/values
-# in this list: ["How was it?", "*", "**", "***", "****", "*****"]
-# And with a button that says "Rate It!" to submit the user's rating.
-# Give this form the action of "/rating-confirmation" and the method of post.
-
-# TODO: DONE
-# Add a function, movie_ratings, to handle a get request and render the template at "/ratings"
-
-# TODO:  DONE
-# Add a function, get_watched_movies, to get the list of crossed off movies. 
-# For now, create a hard-coded list with a few movie titles. 
-
-# TODO: DONE
-# Make a rating-confirmation.html template, to be displayed when the user rates a movie 
-# they have crossed off. 
-
-# TODO: 
-# create a rate_movie function that handles a post request on /rating-confirmation and 
-# renders the `rating-confirmation` template.
-
-@app.route("/crossoff", methods=['POST'])
-def crossoff_movie():
-    crossed_off_movie = request.form['crossed-off-movie']
-
-    if crossed_off_movie not in get_current_watchlist():
-        # the user tried to cross off a movie that isn't in their list,
-        # so we redirect back to the front page and tell them what went wrong
-        error = "'{0}' is not in your Watchlist, so you can't cross it off!".format(crossed_off_movie)
-
-        # redirect to homepage, and include error as a query parameter in the URL
-        return redirect("/?error=" + error)
-
-    # if we didn't redirect by now, then all is well
-    return render_template('crossoff.html', crossed_off_movie=crossed_off_movie)
-
-@app.route("/add", methods=['POST'])
-def add_movie():
-    # look inside the request to figure out what the user typed
-    new_movie = request.form['new-movie']
-
-    # if the user typed nothing at all, redirect and tell them the error
-    if (not new_movie) or (new_movie.strip() == ""):
-        error = "Please specify the movie you want to add."
-        return redirect("/?error=" + error)
-
-    # if the user wants to add a terrible movie, redirect and tell them the error
-    if new_movie in terrible_movies:
-        error = "Trust me, you don't want to add '{0}' to your Watchlist".format(new_movie)
-        return redirect("/?error=" + error)
-
-    # 'escape' the user's input so that if they typed HTML, it doesn't mess up our site
-    new_movie_escaped = cgi.escape(new_movie, quote=True)
-
-    return render_template('add-confirmation.html', movie=new_movie)
-
-
 @app.route("/")
 def index():
-    encoded_error = request.args.get("error")
-    return render_template('edit.html', watchlist=get_current_watchlist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
+	
+   ##Regenerates Username if previous Username was valid
+    if request.args.get("form_name"):
+        user_name1 =  request.args.get("form_name")
+    else:
+        user_name1 = ''
+    ##----------
+
+    ##Getting any error values from previous form submission
+    user_name_error1 = request.args.get("user_name_error")
+    pass_word_error1 = request.args.get("pass_word_error")
+    vpass_word_error1 = request.args.get("vpass_word_error")
+    e_mail_error1 = request.args.get("e_mail_error")
+    return render_template('signup.html', form_name=user_name1, user_name_error=user_name_error1 and cgi.escape(user_name_error1, quote=True),
+    pass_word_error=pass_word_error1 and cgi.escape(pass_word_error1, quote=True),
+    vpass_word_error=vpass_word_error1 and cgi.escape(vpass_word_error1, quote=True),
+    e_mail_error=e_mail_error1 and cgi.escape(e_mail_error1, quote=True))
+    ##----------
+
+@app.route("/submit", methods=['POST'])
+def form_submission():
+    # look inside the request to figure out what the user typed
+    form_error = False
+    user_name = request.form['user_name']
+    pass_word =	request.form['pass_word']
+    vpass_word = request.form['vpass_word']
+    e_mail = request.form['e_mail']
+    error_list=['None','None', 'None', 'None', user_name]
+
+    ##username validation
+    if not user_name:
+        error_list[0] = "Please enter a valid username"
+        error_list[4] = ""
+        user_name='None'        
+        form_error=True
+
+    if " " in user_name:
+        error_list[0] = "Username must not contain spaces"
+        error_list[4] = ""
+        user_name='None'
+        form_error=True
+
+    if len(user_name)<3 and len(user_name)>=1:
+        error_list[0] = "Username too short, must be between 3 and 20 letters"
+        error_list[4] = ""
+        user_name='None'
+        form_error=True
+
+    if len(user_name)>20:
+        error_list[0] = "Username too long, must be between 3 and 20 letters"
+        error_list[4] = ""
+        user_name='None'
+        form_error=True
+    ##-----------------
+
+    ##password validation
+    if not pass_word:
+        error_list[1] = "Please enter a valid password"
+        form_error=True
+
+    if " " in pass_word:
+        error_list[1] = "Password must not contain spaces"
+        form_error=True
+
+    if len(pass_word)<3 and len(pass_word)>=1:
+        error_list[1] = "Password too short, must be between 3 and 20 letters"
+        form_error=True
+
+    if len(pass_word)>20:
+        error_list[1] = "Password too long, must be between 3 and 20 letters"
+        form_error=True
+
+    if not vpass_word or pass_word != vpass_word:
+    	error_list[2] = "Passwords don't match"
+    	form_error=True
+    ##-------------
+
+    ##email validation
+    if e_mail:
+        atcount=e_mail.count('@')
+        pcount=e_mail.count('.')
+        scount=e_mail.count(' ')
+        elength=len(e_mail)
+        if (atcount != 1) or (pcount !=1) or (scount != 0) or (elength<3) or (elength>20):
+            error_list[3] = "Invalid email address"
+            form_error=True
+    ##-------------
 
 
-@app.route("/ratings")
-def movie_ratings():
-    # encoded_error = request.args.get("error")
-    return render_template('ratings.html', watched_movies=get_watched_movies())
 
-@app.route("/rating-confirmation", methods=['POST'])
-def rate_movie():
-    # encoded_error = request.args.get("error")
-    user_stars = request.form['stars']
-    user_movie = request.form['rated_movie']
-    return render_template('rating-confirmation.html', movies=get_watched_movies(), stars=user_stars, movie=user_movie)
+    #form render or redirect
+    if form_error ==True:	
+    	#return redirect("/?user_name_error={r0}&pass_word_error={r1}&vpass_word_error={r2}".format(r0=user_name_error,r1=pass_word_error,r2=vpass_word_error))
+    	return redirect("/?user_name_error={}&pass_word_error={}&vpass_word_error={}&e_mail_error={}&form_name={}".format(*error_list))
+    else:
+    	return render_template('signup.html')
 
 app.run()
-
