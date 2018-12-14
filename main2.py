@@ -29,6 +29,7 @@ def index():
     pass_word_error1 = request.args.get("pass_word_error")
     vpass_word_error1 = request.args.get("vpass_word_error")
     e_mail_error1 = request.args.get("e_mail_error")
+    
     return render_template('index.html', form_name=user_name1, form_email=e_mail1, 
     user_name_error=user_name_error1 and cgi.escape(user_name_error1, quote=True),
     pass_word_error=pass_word_error1 and cgi.escape(pass_word_error1, quote=True),
@@ -99,24 +100,24 @@ def form_submission():
     ##-------------
 
     ##email validation
-    #pattern = re.compile(r'\S[a-zA-Z0-9_+-]+\S@{1}[a-zA-Z0-9-]+\S\.[a-zA-Z0-9-]+') #regular expression for email
-    pattern = re.compile(r'^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$')
-    valid_email = pattern.findall(e_mail)
-    # if e_mail:
+    if e_mail:
+        pattern = re.compile(r'^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$')#Regular expression for email
+        valid_email = pattern.findall(e_mail)
+        elength=len(e_mail)
     #     atcount=e_mail.count('@')
     #     pcount=e_mail.count('.')
     #     scount=e_mail.count(' ')
-    elength=len(e_mail)
-    if not valid_email:
-        # if (atcount != 1) or (pcount !=1) or (scount != 0) or (elength<3) or (elength>20):
-        error_list[3] = "Invalid email address"
-        e_mail='None'
-        form_error=True
+    
+        if not valid_email:
+            # if (atcount != 1) or (pcount !=1) or (scount != 0) or (elength<3) or (elength>20):
+            error_list[3] = "Invalid email address"
+            e_mail='None'
+            form_error=True
 
-    elif (elength<3) or (elength>20):
-        error_list[3] = "email must be between 3 and 20 characters"
-        e_mail='None'
-        form_error=True
+        elif (elength<3) or (elength>20):
+            error_list[3] = "email must be between 3 and 20 characters"
+            e_mail='None'
+            form_error=True
     ##-------------
 
     #Page render or redirect

@@ -29,13 +29,13 @@ def index():
     pass_word_error1 = request.args.get("pass_word_error")
     vpass_word_error1 = request.args.get("vpass_word_error")
     e_mail_error1 = request.args.get("e_mail_error")
+
     return render_template('index.html', form_name=user_name1, form_email=e_mail1, 
     user_name_error=user_name_error1 and cgi.escape(user_name_error1, quote=True),
     pass_word_error=pass_word_error1 and cgi.escape(pass_word_error1, quote=True),
     vpass_word_error=vpass_word_error1 and cgi.escape(vpass_word_error1, quote=True),
     e_mail_error=e_mail_error1 and cgi.escape(e_mail_error1, quote=True))
     ##----------
-
 
 ##Extract form data
 @app.route("/submit", methods=['POST'])
@@ -109,8 +109,6 @@ def form_submission():
             e_mail='None'
             form_error=True
     ##-------------
-
-
 
     #Page render or redirect
     if form_error ==True:	
