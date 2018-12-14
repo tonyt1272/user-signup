@@ -3,26 +3,26 @@
 {% block content %}
 
 
-<html>
+
 	
 	<body>
 		<div class='center'>
-		<h1>Zoey Thompson</h1>
-		<p><strong>Hi, My name is Zoey.  I'm a chihuahua!</strong></p>
+		<h1>Welcome, {{username}}!</h1>
+		<p ><strong>My name is Zoey. &nbspI'm a chihuahua!</strong></p>
 		<img src="\static\Zoey_in_grass.jpg" width="350" height="350">
 		<h3>Some of my favorite places:</h3>
 		<ul>
 			<b>
-			<li>Cole Park</li>
-			<li>Bowie Park at City Center</li>
+			<li><a href="/static/Allen_pond.jpg">Allen Pond Park<a/></li>
+			<li><a href="/static/Town_center.jpg">Bowie Park at City Center</a></li>
 			<li>Idle Wild</li>
 			</b>
 		</ul>
-		<!--h4-->
-			<p>Learn more about chihuahuas <a href="https://www.akc.org/dog-breeds/chihuahua/"><b>here!</b></a></p>
-		<!--/h4-->
+		
+			<strong><p>Learn more about chihuahuas <a href="https://www.akc.org/dog-breeds/chihuahua/"><b>here!</b></a></p></strong>
+		
 		</div>
 	</body>
-</html>
+
 
 {% endblock %}
