@@ -99,18 +99,24 @@ def form_submission():
     ##-------------
 
     ##email validation
-    if e_mail:
-        atcount=e_mail.count('@')
-        pcount=e_mail.count('.')
-        scount=e_mail.count(' ')
-        elength=len(e_mail)
-        if (atcount != 1) or (pcount !=1) or (scount != 0) or (elength<3) or (elength>20):
-            error_list[3] = "Invalid email address"
-            e_mail='None'
-            form_error=True
+    pattern = re.compile(r'\S[a-zA-Z0-9_.+-]+\S@[a-zA-Z0-9-]+\S\.[a-zA-Z0-9-.]+') #regular expression for email
+    valid_email = pattern.findall(e_mail)
+    # if e_mail:
+    #     atcount=e_mail.count('@')
+    #     pcount=e_mail.count('.')
+    #     scount=e_mail.count(' ')
+    elength=len(e_mail)
+    if not valid_email:
+        # if (atcount != 1) or (pcount !=1) or (scount != 0) or (elength<3) or (elength>20):
+        error_list[3] = "Invalid email address"
+        e_mail='None'
+        form_error=True
+
+    elif (elength<3) or (elength>20):
+        error_list[3] = "email must be between 3 and 20 characters"
+        e_mail='None'
+        form_error=True
     ##-------------
-
-
 
     #Page render or redirect
     if form_error ==True:	
