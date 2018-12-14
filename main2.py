@@ -99,7 +99,8 @@ def form_submission():
     ##-------------
 
     ##email validation
-    pattern = re.compile(r'\S[a-zA-Z0-9_.+-]+\S@[a-zA-Z0-9-]+\S\.[a-zA-Z0-9-.]+') #regular expression for email
+    #pattern = re.compile(r'\S[a-zA-Z0-9_+-]+\S@{1}[a-zA-Z0-9-]+\S\.[a-zA-Z0-9-]+') #regular expression for email
+    pattern = re.compile(r'^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$')
     valid_email = pattern.findall(e_mail)
     # if e_mail:
     #     atcount=e_mail.count('@')
